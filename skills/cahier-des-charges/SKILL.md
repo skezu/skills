@@ -1,37 +1,37 @@
 ---
 name: cahier-des-charges
-description: Rédige un Cahier des Charges (CdC) professionnel en français. Utilise ce skill pour transformer des spécifications techniques (requirements.md, design.md) en un document de cadrage formel destiné aux parties prenantes. Le CdC définit le périmètre, les objectifs, les besoins fonctionnels et techniques, ainsi que les contraintes du projet.
+description: Rédige un Cahier des Charges (CdC) professionnel pour application mobile ou web en français. Ce skill transforme les spécifications techniques (requirements.md, design.md) en un document de cadrage formel. Il met l'accent sur les objectifs stratégiques, l'expérience utilisateur (UX/UI), les fonctionnalités détaillées, les contraintes techniques (iOS/Android, Swift/Kotlin) et la collaboration client-développeur.
 ---
 
-# Cahier des Charges (CdC)
+# Cahier des Charges (CdC) Professionnel
 
-Ce skill permet de générer un document de spécifications fonctionnelles et techniques complet en français, basé sur la méthodologie agile et les standards industriels.
+Ce skill guide la rédaction d'un Cahier des Charges exhaustif, servant de contrat moral et technique entre le client et l'équipe de développement.
+
+## Principes Fondamentaux (Bonnes Pratiques)
+
+1. **Objectifs et Besoins** : Commencer par une analyse profonde des besoins métier et des utilisateurs finaux (études de marché, analyses concurrentielles).
+2. **Spécifications Fonctionnelles** : Détailler chaque fonctionnalité pour éviter les ambiguïtés. Utiliser des cas d'utilisation (Use Cases) précis.
+3. **Expérience Utilisateur (UX)** : Décrire la navigation, l'interactivité et l'ergonomie. Mentionner l'usage de wireframes ou maquettes.
+4. **Contraintes Techniques** : Préciser les plateformes (iOS, Android), les langages (Swift, Kotlin, etc.), la gestion des données (MySQL, etc.) et les exigences de performance.
+5. **Sécurité et Réglementation** : Inclure la protection des données (RGPD) et la conformité aux normes de sécurité.
 
 ## Flux de travail
 
-1. **Analyse des entrées** : Lire les fichiers `.agent/specs/{feature-name}/requirements.md` et `design.md` générés par le skill `spec-driven-dev`.
-2. **Structuration** : Utiliser le template standard (voir `references/template.md`).
-3. **Rédaction** : Rédiger le contenu en français professionnel, clair et structuré.
-4. **Validation** : Vérifier que tous les points des requirements sont couverts.
+1. **Collecte d'Intel** : Lire `.agent/specs/{feature-name}/requirements.md` et `design.md`.
+2. **Cadrage** : Définir le contexte, le public cible et le positionnement marché.
+3. **Rédaction Structurée** : Suivre scrupuleusement le plan défini dans `references/template.md`.
+4. **Révision Collaborative** : S'assurer que le document permet une communication fluide et évite les malentendus coûteux.
 
-## Structure du Document
+## Structure Recommandée
 
-Le document produit doit suivre cet ordre :
-- **Introduction** : Contexte du projet et objectifs globaux.
-- **Besoins Fonctionnels** : Description détaillée des fonctionnalités (User Stories, critères d'acceptation).
-- **Spécifications Techniques** : Architecture, stack technologique, interfaces.
-- **Contraintes** : Sécurité, performance, maintenance, accessibilité.
-- **Livrables** : Ce qui sera fourni à la fin du projet.
-- **Planning Prévisionnel** : Jalons principaux.
-
-## Règles de Rédaction
-
-- **Langue** : Français formel (Vouvoiement si nécessaire, ton professionnel).
-- **Précision** : Éviter le jargon inutile, expliquer les termes techniques.
-- **Action** : Utiliser des verbes d'action.
-- **Structure** : Utiliser des listes à puces et des tableaux pour la lisibilité.
+- **Introduction** : Présentation de l'entreprise et contexte.
+- **Objectifs de l'Application** : Accès aux services, engagement, expérience utilisateur.
+- **Fonctionnalités Principales** : Inscription, profil, notifications push, contenu dynamique, intégration sociale.
+- **Design & UX** : Identité de marque, couleurs, typographies, réactivité.
+- **Contraintes Techniques** : OS, langages, base de données, temps de réponse.
+- **Livrables** : Application fonctionnelle, doc technique, manuel utilisateur, rapports de tests.
+- **Calendrier & Budget** : Phases de conception, dev, tests et lancement.
 
 ## Ressources
-
-- [Template de CdC](references/template.md) : Structure de base recommandée.
-- [Exemple de CdC](references/example.md) : Exemple concret d'un projet type.
+- [Template Officiel](references/template.md)
+- [Exemple d'Application Mobile](references/example.md)
