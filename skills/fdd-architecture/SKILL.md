@@ -1,59 +1,89 @@
 ---
 name: fdd-architecture
-description: "Expert guide for implementing Feature-Driven Development (FDD) architecture. Use when: (1) Creating new features, (2) Refactoring folder structures, (3) Initializing project layouts. Enforces strict feature isolation, clear public APIs, and scalable organization."
+description: "Expert guide for implementing Feature-Driven Development (FDD) architecture in frontend projects (React/TypeScript). Use when: (1) Creating new features, (2) Refactoring or migrating a legacy folder structure to FDD, (3) Initializing a new project layout, (4) Reviewing whether code follows FDD principles. Enforces strict feature isolation, clear public APIs via index.ts barrel files, and scalable feature organization."
 ---
 
 # Feature-Driven Development (FDD) Architecture
 
-Organize code by **what it does**, not **what it is**. This skill ensures high cohesion, clear boundaries, and team ownership.
+Organize code by **what it does**, not **what it is**. Each feature is a self-contained vertical slice owning all its layers.
 
-## Feature Isolation Rules
+## Mandatory Folder Structure
 
-Each feature MUST own its technical layers within its directory. **Never scatter related logic.**
-
-### Mandatory Folder Structure
 ```
-src/features/<feature-name>/
-├── components/     # UI components specific to this feature
-├── hooks/          # Hooks for data fetching, state, or side effects
-├── services/       # API calls, business logic, utility functions
-├── types/          # TypeScript interfaces/types
-└── index.ts        # The Public API (Required)
+src/
+├── features/
+│   ├── <feature-name>/
+│   │   ├── components/   # UI components for this feature
+│   │   ├── hooks/        # Data fetching, state, side-effects
+│   │   ├── services/     # API calls, business logic
+│   │   ├── types/        # TypeScript interfaces/types
+│   │   └── index.ts      # Public API (REQUIRED)
+│   └── shared/           # Cross-feature business logic
+└── components/ui/        # Universal UI primitives (Button, Input)
 ```
 
-## The "Public API" Pattern
+## The Public API Rule
 
-To prevent "import leakage" and tangled dependencies, features must only communicate through their `index.ts` file.
+Features communicate **only** through their `index.ts` barrel file. Never import from a sub-path.
 
-1. **Internal by Default**: Files inside a feature should NOT be imported directly (e.g., `import { MyComponent } from '@/features/auth/components/MyComponent'`).
-2. **Export Explicitly**: Only export what's needed for the rest of the application in `index.ts`.
-3. **Consumption**: Other features/pages import from the feature root (e.g., `import { MyComponent } from '@/features/auth'`).
+```ts
+// ✅ Correct
+import { useAuth, LoginForm } from '@/features/auth';
 
-### Example `index.ts`
-```typescript
-// features/auth/index.ts
+// ❌ Wrong — leaks internals
+import { LoginForm } from '@/features/auth/components/LoginForm';
+```
+
+**Feature `index.ts` template:**
+```ts
+// features/<name>/index.ts — public feature API
 export * from './components';
 export * from './hooks';
 export * from './services';
 export * from './types';
 ```
 
-## Absolute Imports
-
-Always use absolute imports (e.g., `@/features/...`) for cross-feature communication. This ensures:
-- Refactoring folder structures doesn't break relative paths.
-- Clearer understanding of where a component or hook originates.
-
-## Shared Code Strategy
-
-- **`src/components/ui/`**: Truly universal UI primitives (Button, Input, Card).
-- **`src/features/shared/`**: Business-domain specific code used across multiple features (e.g., a shared `ProductCard` or `useUserPreferences`).
+The `assets/feature-template/` directory contains a ready-to-copy scaffold.
 
 ## Workflow: Creating a New Feature
 
-1. Create the directory structure: `mkdir -p src/features/<name>/{components,hooks,services,types}`.
-2. Initialize `index.ts` in each subdirectory.
-3. Initialize the main `index.ts` for the feature.
-4. Populate `types/` first to define the data model.
-5. Implement `services/` and `hooks/` for logic.
-6. Build `components/` using the established logic.
+1. Copy `assets/feature-template/` → `src/features/<name>/`
+2. Populate `types/` first to define the data model
+3. Implement `services/` and `hooks/`
+4. Build `components/` using the established logic
+5. Export the public API from `index.ts`
+
+## Workflow: Migrating a Legacy Project
+
+For migrating a layered structure (e.g., `src/components/`, `src/hooks/`) to FDD:
+
+**Read [`references/migration-guide.md`](references/migration-guide.md)** for the full 4-phase process.
+
+### Quick Start with Scripts
+
+**1. Audit the project** (run from project root):
+```bash
+node path/to/skill/scripts/analyze-migration.js
+```
+Outputs a full report grouping existing files into FDD feature candidates. Use this before touching any files.
+
+**2. Move files** (run per feature, per layer):
+```bash
+node path/to/skill/scripts/scaffold-feature-move.js <feature> <layer> <files...>
+```
+- Creates the FDD directory structure
+- Moves files to the correct layer
+- Auto-updates `index.ts` barrel exports
+
+Valid layers: `components` | `hooks` | `services` | `types`
+
+> **Token optimization**: Run the audit script first to generate a full project map in one shot, avoiding repeated `list_dir` calls across the codebase.
+
+## Shared Code Rules
+
+| Code | Location |
+| :--- | :--- |
+| Used by 2+ features | `src/features/shared/` |
+| Pure UI primitive (Button, Input) | `src/components/ui/` |
+| Global state store | `src/store/` |
+| App entrypoint, router | `src/` root, unchanged |
